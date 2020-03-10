@@ -11,7 +11,8 @@ class FoamModel extends Component {
       timer: null,
       active: [0,0],
       grid: [],
-      trail: []
+      trail: [],
+      turns: 0
     };
 
     this.transitions = [
@@ -49,7 +50,7 @@ class FoamModel extends Component {
     }
 
     this.jump = () => {
-      const {active, grid, trail} = this.state
+      const {active, grid, trail, turns} = this.state
       const probs = grid[active[0]][active[1]]
       const dice = Math.random()
       let sum = 0
@@ -65,8 +66,7 @@ class FoamModel extends Component {
       const l = grid.length
       const newActive = [(active[0] + transition[0] + l)%l, (active[1] + transition[1] + l)%l]
       trail[newActive[0]][newActive[1]] += 1
-      console.log(trail);
-      this.setState({active: newActive, trail})
+      this.setState({active: newActive, trail, turns: turns + 1})
     }
 
   }
@@ -86,15 +86,15 @@ class FoamModel extends Component {
   }
 
   render () {
-    const {active, grid, trail} = this.state
-    console.log(trail);
+    const {active, grid, trail, turns} = this.state
     return <Hexgrid
-        width={400}
-        height={400}
-        size={10}
+        width={800}
+        height={800}
+        size={7}
         active={active}
         grid={grid}
         trail={trail}
+        turns={turns}
       />
   }
 }

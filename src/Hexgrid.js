@@ -10,19 +10,18 @@ const hexCorners = (center, size) => {
   return points
 }
 
-const getStyle = (i, j, active, trail) => {
-  console.log(trail);
+const getStyle = (i, j, active, trail, turns) => {
   if (i === active[0] && j === active[1]) {
     return {...styles.hexagon, ...styles.active}
   }
   else {
-    return {...styles.hexagon, opacity: trail[i][j] * .01}
+    return {...styles.hexagon, opacity: trail[i][j] * .02}
   }
 }
 
 const Hexgrid = (props) =>
 {
-  const {width, height, size, grid, active, trail} = props
+  const {width, height, size, grid, active, trail, turns} = props
 
   return (
     <div className="App">
@@ -35,10 +34,10 @@ const Hexgrid = (props) =>
         {
           grid.map(
             (n, i) => n.map((m, j) =>
-              <polygon
+              trail[i][j] > 0 && <polygon
                 key={`${i},${j}`}
                 points={hexCorners({x: size * (i+1) * 1.5, y: size * ((i%2 + 1) + (j+1) * 1.75)}, size)}
-                style={getStyle(i,j, active, trail)}/>
+                style={getStyle(i,j, active, trail, turns)}/>
             )
           )
         }

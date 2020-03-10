@@ -3,7 +3,7 @@ import './App.css';
 import FoamModel from './FoamModel';
 
 function App() {
-  return <FoamModel size={20}/>
+  return <FoamModel size={50}/>
 
 }
 
