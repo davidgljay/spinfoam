@@ -64,13 +64,14 @@ class FoamModel extends Component {
       const transition = this.transitions[jump]
       const l = grid.length
       const newActive = [(active[0] + transition[0] + l)%l, (active[1] + transition[1] + l)%l]
-      trail[newActive[0], newActive[1]] +=1
+      trail[newActive[0]][newActive[1]] += 1
+      console.log(trail);
       this.setState({active: newActive, trail})
     }
 
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const {size} = this.props
     this.setgrid(size)
     this.setState({
@@ -85,13 +86,15 @@ class FoamModel extends Component {
   }
 
   render () {
-    const {active, grid} = this.state
+    const {active, grid, trail} = this.state
+    console.log(trail);
     return <Hexgrid
         width={400}
         height={400}
         size={10}
         active={active}
         grid={grid}
+        trail={trail}
       />
   }
 }

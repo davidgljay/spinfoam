@@ -8,12 +8,21 @@ const hexCorners = (center, size) => {
     return text + ` ${center.x + size * cos(angle_rad)},${center.y + size * sin(angle_rad)}`
   }, '')
   return points
+}
 
+const getStyle = (i, j, active, trail) => {
+  console.log(trail);
+  if (i === active[0] && j === active[1]) {
+    return {...styles.hexagon, ...styles.active}
+  }
+  else {
+    return {...styles.hexagon, opacity: trail[i][j] * .01}
+  }
 }
 
 const Hexgrid = (props) =>
 {
-  const {width, height, size, grid, active} = props
+  const {width, height, size, grid, active, trail} = props
 
   return (
     <div className="App">
@@ -29,9 +38,7 @@ const Hexgrid = (props) =>
               <polygon
                 key={`${i},${j}`}
                 points={hexCorners({x: size * (i+1) * 1.5, y: size * ((i%2 + 1) + (j+1) * 1.75)}, size)}
-                style={i === active[0] && j === active[1]
-                  ? {...styles.hexagon, ...styles.active}
-                  : styles.hexagon}/>
+                style={getStyle(i,j, active, trail)}/>
             )
           )
         }
