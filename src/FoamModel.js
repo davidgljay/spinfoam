@@ -9,7 +9,7 @@ class FoamModel extends Component {
 
     this.state = {
       timer: null,
-      active: [0,0],
+      active: [this.props.size/2,this.props.size/2],
       grid: [],
       trail: [],
       turns: 0,
