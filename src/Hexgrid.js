@@ -24,8 +24,7 @@ const Hexgrid = (props) =>
   const {width, height, size, grid, active, trail, turns} = props
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
       <svg id="visualization"
         width={width}
         height={height}
@@ -43,7 +42,6 @@ const Hexgrid = (props) =>
         }
 
       </svg>
-      </header>
     </div>
   );
 }
