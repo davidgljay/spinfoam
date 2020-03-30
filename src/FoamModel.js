@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import Hexgrid from './Hexgrid'
 import EntropyGraph from './EntropyGraph'
+import Slider from '@material-ui/core/Slider'
 
 class FoamModel extends Component {
 
@@ -15,7 +16,8 @@ class FoamModel extends Component {
       trail: [],
       turns: 0,
       trailEntropyLog: [0],
-      gridEntropy: 0
+      gridEntropy: 0,
+      bumpiness: 1
     };
 
     this.transitions = [
@@ -83,6 +85,11 @@ class FoamModel extends Component {
       this.setState({active: newActive, trail, turns: turns + 1})
     }
 
+    this.handleSlider = (e, v) => {
+      this.setState({bumpiness: v})
+      console.log(v);
+    }
+
   }
 
   componentDidMount() {
@@ -100,13 +107,32 @@ class FoamModel extends Component {
   }
 
   render () {
-    const {active, grid, trail, trailEntropyLog, turns} = this.state
+    const {active, grid, trail, trailEntropyLog, turns, bumpiness} = this.state
     return <div>
       <div style={styles.header}>
       <h2>A Model Evolutionary System</h2>
       <div style={styles.headerText}>
         The purple hex traverses a landscape with randomly defined probabilities.<br/>
+        The landscape can be made "flat" (probabilities are similar) or "bumpy" (probabilities diverge).
       </div>
+      </div>
+      <div style={styles.sliderContainer}>
+        <div>
+          Flat
+        </div>
+        <div style={styles.slider}>
+          <Slider
+            className='bumpinessSlider'
+            value={bumpiness}
+            aria-labelledby="Bumpiness"
+            onChange={this.handleSlider}
+            min={0}
+            step={.1}
+            max={10} />
+        </div>
+        <div>
+          Bumpy
+        </div>
       </div>
       <Hexgrid
         width={650}
@@ -137,5 +163,14 @@ const styles={
   },
   headerText: {
     fontSize: 16
+  },
+  sliderContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  slider: {
+    flex: 1,
+    margin: 20
   }
+
 }
