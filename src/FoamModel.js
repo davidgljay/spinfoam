@@ -102,6 +102,12 @@ class FoamModel extends Component {
   render () {
     const {active, grid, trail, trailEntropyLog, turns} = this.state
     return <div>
+      <div style={styles.header}>
+      <h2>A Model Evolutionary System</h2>
+      <div style={styles.headerText}>
+        The purple hex traverses a landscape with randomly defined probabilities.<br/>
+      </div>
+      </div>
       <Hexgrid
         width={800}
         height={800}
@@ -122,3 +128,13 @@ class FoamModel extends Component {
 
 
 export default FoamModel;
+
+const styles={
+  header: {
+    textAlign: "center",
+    maxWidth: 800
+  },
+  headerText: {
+    fontSize: 16
+  }
+}
