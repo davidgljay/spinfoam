@@ -109,8 +109,8 @@ class FoamModel extends Component {
       </div>
       </div>
       <Hexgrid
-        width={800}
-        height={800}
+        width={650}
+        height={650}
         size={7}
         active={active}
         grid={grid}
@@ -132,7 +132,8 @@ export default FoamModel;
 const styles={
   header: {
     textAlign: "center",
-    maxWidth: 800
+    maxWidth: 650,
+    margin: 40
   },
   headerText: {
     fontSize: 16
