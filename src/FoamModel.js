@@ -17,7 +17,9 @@ class FoamModel extends Component {
       turns: 0,
       trailEntropyLog: [0],
       gridEntropy: 0,
-      bumpiness: 1
+      bumpiness: 1,
+      checkSlider: false,
+      sliderTimer: null,
     };
 
     this.transitions = [
@@ -33,6 +35,7 @@ class FoamModel extends Component {
     this.setgrid = (size) => {
       // Create an sizexsize grid. Each grid point has probabilities of jumping
       // into 1 of 6 adjacent hexes.
+      const {bumpiness} = this.state
       let grid = []
       let trail = []
       let gridEntropy = 0
@@ -43,17 +46,37 @@ class FoamModel extends Component {
           grid[i][j] = []
           trail[i][j] = 0
           let sum = 0
-          for (var k = 0; k < 7; k++) {
-            grid[i][j][k] = Math.random()
+          for (var k = 0; k < 6; k++) {
+            grid[i][j][k] = Math.random() ** bumpiness
             sum += grid[i][j][k]
           }
-          for (k = 0; k < 7; k++) {
+          for (k = 0; k < 6; k++) {
             grid[i][j][k] = grid[i][j][k]/sum
             gridEntropy += grid[i][j][k] * Math.log(grid[i][j][k])
           }
         }
       }
       this.setState({grid, trail, gridEntropy})
+    }
+
+    this.checkSlider = () => {
+      const {checkSlider, timer} = this.state
+      const {size} = this.props
+      if (!checkSlider) {
+        return
+      }
+      clearInterval(timer)
+      this.setState({
+        active: [this.props.size/2,this.props.size/2],
+        turns: 0,
+        trailEntropyLog: [0],
+        gridEntropy: 0,
+        checkSlider: false
+      })
+      this.setgrid(size)
+      this.setState({
+        timer: setInterval(() => this.jump(), 50)
+      })
     }
 
     this.jump = () => {
@@ -86,8 +109,10 @@ class FoamModel extends Component {
     }
 
     this.handleSlider = (e, v) => {
-      this.setState({bumpiness: v})
-      console.log(v);
+      this.setState({
+        bumpiness: v,
+        checkSlider: true
+      })
     }
 
   }
@@ -96,13 +121,16 @@ class FoamModel extends Component {
     const {size} = this.props
     this.setgrid(size)
     this.setState({
-      timer: setInterval(() => this.jump(), 50)
+      timer: setInterval(() => this.jump(), 50),
+      sliderTimer: setInterval(() => this.checkSlider(), 500)
     })
 
   }
 
   componentWillUnmount() {
-    this.state.timer()
+    const {timer, sliderTimer} = this.state
+    clearInterval(timer)
+    clearInterval(sliderTimer)
 
   }
 
